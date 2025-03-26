@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:qrpay/backend/model/add_money/add_money_ssl_insert_model.dart';
 import 'package:qrpay/backend/model/auth/login/reset_password.dart';
@@ -1378,10 +1379,11 @@ class ApiServices {
       );
       if (mapResponse != null) {
         BillPayInfoModel modelData = BillPayInfoModel.fromJson(mapResponse);
-
+        debugPrint("$modelData");
         return modelData;
       }
-    } catch (e) {
+    } catch (e, s) {
+      print(s);
       log.e('🐞🐞🐞 err from bill pay info api service ==> $e 🐞🐞🐞');
       CustomSnackBar.error('Something went Wrong! in bill pay info Api');
       return null;
@@ -1718,7 +1720,8 @@ class ApiServices {
 
         return modelData;
       }
-    } catch (e) {
+    } catch (e, s) {
+      print(s);
       log.e('🐞🐞🐞 err from all recipient info api service ==> $e 🐞🐞🐞');
       CustomSnackBar.error('Something went Wrong! in all recipient info Api');
       return null;

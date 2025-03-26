@@ -36,7 +36,6 @@ class Data {
     required this.baseCurr,
     required this.baseCurrRate,
     required this.getRemainingFields,
-
     required this.billPayCharge,
     required this.billTypes,
     required this.billMonths,
@@ -45,7 +44,7 @@ class Data {
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         baseCurr: json["base_curr"],
         baseCurrRate: double.parse(json["base_curr_rate"]),
-              getRemainingFields:
+        getRemainingFields:
             GetRemainingFields.fromJson(json["get_remaining_fields"]),
         billPayCharge: BillPayCharge.fromJson(json["billPayCharge"]),
         billTypes: List<BillType>.from(
@@ -58,7 +57,6 @@ class Data {
   Map<String, dynamic> toJson() => {
         "base_curr": baseCurr,
         "base_curr_rate": baseCurrRate,
-
         "get_remaining_fields": getRemainingFields.toJson(),
         "billPayCharge": billPayCharge.toJson(),
         "billTypes": List<dynamic>.from(billTypes.map((x) => x.toJson())),
@@ -86,6 +84,7 @@ class GetRemainingFields {
         "attribute": attribute,
       };
 }
+
 class BillPayCharge {
   int id;
   String slug;
@@ -167,7 +166,7 @@ class Transaction {
         requestAmount: json["request_amount"],
         payable: json["payable"],
         billType: json["bill_type"],
-        billNumber: json["bill_number"],
+        billNumber: json["bill_number"].toString(),
         totalCharge: json["total_charge"],
         currentBalance: json["current_balance"],
         status: json["status"],

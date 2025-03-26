@@ -198,10 +198,10 @@ class BillPayScreen extends StatelessWidget {
                     controller.exchangeRateUpdate();
                     controller.getAutomaticFee();
                     controller.dailyLimit.value = controller
-                            .billPayInfoData.data.billPayCharge.dailyLimit *
+                            .billPayInfoData?.data.billPayCharge.dailyLimit *
                         double.parse(value.currency.rate);
                     controller.monthlyLimit.value = controller
-                            .billPayInfoData.data.billPayCharge.monthlyLimit *
+                            .billPayInfoData?.data.billPayCharge.monthlyLimit *
                         double.parse(value.currency.rate);
                   },
                 ),

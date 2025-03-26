@@ -67,36 +67,36 @@ class BillPayController extends GetxController {
 
   bool get isInsertLoading => _isInsertLoading.value;
 
-  late BillPayInfoModel _billPayInfoData;
+  BillPayInfoModel? _billPayInfoData;
 
-  BillPayInfoModel get billPayInfoData => _billPayInfoData;
+  BillPayInfoModel? get billPayInfoData => _billPayInfoData;
 
   // --------------------------- Api function ----------------------------------
   // get bill pay data function
-  Future<BillPayInfoModel> getBillPayInfoData() async {
+  Future<BillPayInfoModel?> getBillPayInfoData() async {
     _isLoading.value = true;
     update();
 
     await ApiServices.billPayInfoAPi().then((value) {
       _billPayInfoData = value!;
-      var data = _billPayInfoData.data;
-      baseCurrency.value = data.baseCurr;
-      limitMin.value = data.billPayCharge.minLimit;
-      limitMax.value = data.billPayCharge.maxLimit;
-      dailyLimit.value = data.billPayCharge.dailyLimit;
-      monthlyLimit.value = data.billPayCharge.monthlyLimit;
-      automaticMin.value = data.billTypes.first.minLocalTransactionAmount;
-      automaticMax.value = data.billTypes.first.maxLocalTransactionAmount;
-      automaticLimitMin.value = data.billTypes.first.minLocalTransactionAmount;
-      automaticLimitMax.value = data.billTypes.first.maxLocalTransactionAmount;
-      percentCharge.value = data.billPayCharge.percentCharge;
-      fixedCharge.value = data.billPayCharge.fixedCharge;
-      rate.value = data.baseCurrRate;
-      automaticRate.value = data.billTypes.first.receiverCurrencyRate;
+      var data = _billPayInfoData?.data;
+      baseCurrency.value = data?.baseCurr ?? "";
+      limitMin.value = data?.billPayCharge.minLimit;
+      limitMax.value = data?.billPayCharge.maxLimit;
+      dailyLimit.value = data?.billPayCharge.dailyLimit;
+      monthlyLimit.value = data?.billPayCharge.monthlyLimit;
+      automaticMin.value = data?.billTypes.first.minLocalTransactionAmount;
+      automaticMax.value = data?.billTypes.first.maxLocalTransactionAmount;
+      automaticLimitMin.value = data?.billTypes.first.minLocalTransactionAmount;
+      automaticLimitMax.value = data?.billTypes.first.maxLocalTransactionAmount;
+      percentCharge.value = data?.billPayCharge.percentCharge;
+      fixedCharge.value = data?.billPayCharge.fixedCharge;
+      rate.value = data?.baseCurrRate;
+      automaticRate.value = data?.billTypes.first.receiverCurrencyRate;
       automaticSelectedCurrency.value =
-          data.billTypes.first.receiverCurrencyCode;
+          data?.billTypes.first.receiverCurrencyCode;
       // type.value = data.billTypes.first.id.toString();
-      billItemType.value = data.billTypes.first.itemType ?? "";
+      billItemType.value = data?.billTypes.first.itemType ?? "";
 
       // Get wallet information
       selectMainWallet.value =
@@ -110,17 +110,17 @@ class BillPayController extends GetxController {
           ),
         );
       }
-      print('billTypes: ${data.billTypes.first.id}');
-      if (data.billTypes.first.name == "AUTOMATIC") {
+      print('billTypes: ${data?.billTypes.first.id}');
+      if (data?.billTypes.first.name == "AUTOMATIC") {
         isAutomatic.value = true;
       } else {
         isAutomatic.value = false;
       }
 
-      billMethodselected.value = data.billTypes.first.name!;
-      billTypeNameMethod.value = data.billTypes.first.name!;
+      billMethodselected.value = data?.billTypes.first.name ?? "";
+      billTypeNameMethod.value = data?.billTypes.first.name ?? "";
 
-      for (var element in data.billTypes) {
+      for (var element in data!.billTypes) {
         billList.add(
           BillType(
             id: element.id,
@@ -147,18 +147,19 @@ class BillPayController extends GetxController {
 
       //start remaing get
       remainingController.transactionType.value =
-          _billPayInfoData.data.getRemainingFields.transactionType;
+          _billPayInfoData?.data.getRemainingFields.transactionType ?? "";
       remainingController.attribute.value =
-          _billPayInfoData.data.getRemainingFields.attribute;
-      remainingController.cardId.value = _billPayInfoData.data.billPayCharge.id;
+          _billPayInfoData?.data.getRemainingFields.attribute ?? "";
+      remainingController.cardId.value =
+          _billPayInfoData?.data.billPayCharge.id ?? 0;
       remainingController.senderAmount.value = amountController.text;
       remainingController.senderCurrency.value =
           selectMainWallet.value!.currency.code;
 
       remainingController.getRemainingBalanceProcess();
       selectedBillMonths.value =
-          _billPayInfoData.data.billMonths.first.fieldName;
-      for (var element in _billPayInfoData.data.billMonths) {
+          _billPayInfoData?.data.billMonths.first.fieldName ?? "";
+      for (var element in _billPayInfoData!.data.billMonths) {
         billMonthsList.add(element.fieldName);
       }
 
@@ -183,12 +184,12 @@ class BillPayController extends GetxController {
     return _billPayInfoData;
   }
 
-  late CommonSuccessModel _successDatya;
+  CommonSuccessModel? _successDatya;
 
-  CommonSuccessModel get successDatya => _successDatya;
+  CommonSuccessModel? get successDatya => _successDatya;
 
   // Login process function
-  Future<CommonSuccessModel> billPayApiProcess({
+  Future<CommonSuccessModel?> billPayApiProcess({
     required String type,
     required String amount,
     required String billNumber,
@@ -224,7 +225,7 @@ class BillPayController extends GetxController {
   }
 
   String? getType(String value) {
-    for (var element in billPayInfoData.data.billTypes) {
+    for (var element in billPayInfoData!.data.billTypes) {
       if (element.name == value) {
         return element.id.toString();
       }
