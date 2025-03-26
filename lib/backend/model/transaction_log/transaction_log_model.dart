@@ -139,8 +139,9 @@ class Transactions {
   String toRawJson() => json.encode(toJson());
 
   factory Transactions.fromJson(Map<String, dynamic> json) => Transactions(
-        billPay: List<BillPay>.from(
-            json["bill_pay"].map((x) => BillPay.fromJson(x))),
+        billPay: List<BillPay>.from(json["bill_pay"].map(
+          (x) => BillPay.fromJson(x),
+        )),
         mobileTopUp: List<MobileTopUp>.from(
             json["top_up"].map((x) => MobileTopUp.fromJson(x))),
         addMoney: List<AddMoney>.from(
@@ -290,8 +291,8 @@ class BillPay {
         transactionType: json["transaction_type"] ?? '',
         requestAmount: json["request_amount"] ?? '',
         payable: json["payable"] ?? '',
-        billType: json["bill_type"] ?? '',
-        billNumber: json["bill_number"] ?? '',
+        billType: json["bill_type"] ?? "",
+        billNumber: json["bill_number"].toString(),
         totalCharge: json["total_charge"] ?? '',
         currentBalance: json["current_balance"] ?? '',
         status: json["status"] ?? '',

@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:qrpay/utils/basic_screen_imports.dart';
 import '../../utils/maintenance_dialog.dart';
 import '../local_storage/local_storage.dart';
 import '../model/common/error_message_model.dart';
@@ -22,6 +23,7 @@ Map<String, String> basicHeaderInfo() {
 
 Future<Map<String, String>> bearerHeaderInfo() async {
   String accessToken = LocalStorage.getToken()!;
+  debugPrint(accessToken);
 
   return {
     HttpHeaders.acceptHeader: "application/json",
