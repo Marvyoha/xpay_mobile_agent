@@ -1,0 +1,247 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qrpay/backend/utils/custom_snackbar.dart';
+
+import '../../../controller/categories/money_in/money_in_controller.dart';
+import '../../../controller/categories/send_money/send_money_controller.dart';
+import '../../../custom_assets/assets.gen.dart';
+import '../../../language/english.dart';
+import '../../../routes/routes.dart';
+import '../../../utils/custom_color.dart';
+import '../../../utils/dimensions.dart';
+import '../../../utils/responsive_layout.dart';
+import '../../../widgets/appbar/appbar_widget.dart';
+import '../../others/custom_image_widget.dart';
+
+class QRCodeScreen extends StatefulWidget {
+  const QRCodeScreen({Key? key}) : super(key: key);
+
+  @override
+  ScanScreenState createState() => ScanScreenState();
+}
+
+class ScanScreenState extends State<QRCodeScreen> {
+  final qrKey = GlobalKey(debugLabel: 'QR');
+  QRViewController? controller;
+  Barcode? barcode;
+  RxBool isVisible = true.obs;
+  final moneyInController = Get.put(MoneyInController());
+  final sendMoneyController = Get.put(SendMoneyController());
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
+
+  // In order to get hot reload to work we need to pause the camera if the platform
+  // is android, or resume the camera if the platform is iOS.
+  @override
+  void reassemble() async {
+    super.reassemble();
+    if (Platform.isAndroid) {
+      await controller!.pauseCamera();
+    } else if (Platform.isIOS) {
+      controller!.resumeCamera();
+    }
+  }
+
+  void readQr() async {
+    if (barcode != null && controller != null) {
+      await controller!.pauseCamera();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+          statusBarColor: CustomColor.primaryLightScaffoldBackgroundColor),
+    );
+    return ResponsiveLayout(
+      mobileScaffold: Scaffold(
+        appBar: const AppBarWidget(
+          text: Strings.scanQR,
+        ),
+        body: _bodyWidget(context),
+      ),
+    );
+  }
+
+  // body widget containing all widget elements
+  _bodyWidget(BuildContext context) {
+    return Center(
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Positioned(
+            top: 40,
+            child: _scanQrCodeWidget(context),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 5,
+            left: 5,
+            child: _iconButtonWidget(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _scanQrCodeWidget(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: _buildQrViewWidget(context),
+    );
+  }
+
+  _buildQrViewWidget(BuildContext context) {
+    return QRView(
+      key: qrKey,
+      onQRViewCreated: onQRViewCreated,
+      overlay: QrScannerOverlayShape(
+          cutOutSize: MediaQuery.of(context).size.width * 0.6,
+          borderWidth: 8,
+          borderLength: 20,
+          borderRadius: 10,
+          borderColor: Theme.of(context).primaryColor),
+    );
+  }
+
+  void onQRViewCreated(QRViewController? controller) {
+    setState(() => this.controller = controller);
+
+    controller!.scannedDataStream.listen((barcode) {
+      // Prevent multiple scans by checking if we're already processing
+      if (isVisible.value == false) return;
+
+      // Set flag to indicate we're processing a scan
+      isVisible.value = false;
+
+      setState(() {
+        this.barcode = barcode;
+
+        try {
+          // Check if barcode data is not null
+          if (barcode.code == null) {
+            controller.pauseCamera(); // Pause camera on error
+            CustomSnackBar.error('Invalid QR code data');
+            Future.delayed(const Duration(seconds: 2), () {
+              controller.resumeCamera();
+              isVisible.value = true; // Allow scanning again after delay
+            });
+            return;
+          }
+
+          Map<String, dynamic> qrCodeData;
+          qrCodeData = jsonDecode(barcode.code.toString());
+          // Validate required fields exist
+          if (!qrCodeData.containsKey("origin") ||
+              !qrCodeData.containsKey("uniqueCode")) {
+            controller.pauseCamera(); // Pause camera on error
+            CustomSnackBar.error('Invalid QR code format');
+            Future.delayed(const Duration(seconds: 2), () {
+              controller.resumeCamera();
+              isVisible.value = true; // Allow scanning again after delay
+            });
+            return;
+          }
+
+          switch (qrCodeData["origin"]) {
+            case "user":
+
+//  String uniqueCode = qrCodeData["uniqueCode"] ?? "";
+              String uniqueCode = qrCodeData["uniqueCode"].toString();
+              moneyInController.senderAmountController.text =
+                  qrCodeData["expectedAmount"].toString().isNotEmpty
+                      ? qrCodeData["expectedAmount"].toString()
+                      : "0";
+              moneyInController.receiverAmountController.text =
+                  qrCodeData["expectedAmount"].toString().isNotEmpty
+                      ? qrCodeData["expectedAmount"].toString()
+                      : "0";
+              moneyInController.remainingController.senderCurrency.value =
+                  qrCodeData['currency'];
+              moneyInController.senderCurrency.value = qrCodeData['currency'];
+              moneyInController.receiverCurrency.value = qrCodeData['currency'];
+              moneyInController.fromBarcode.value = qrCodeData['fromBarcode'];
+
+              moneyInController.getCheckUserWithQrCodeData(uniqueCode);
+              // Get.back();
+              debugPrint("this.barcode!.code=> ${this.barcode!.code}");
+
+              moneyInController.copyInputController.text = uniqueCode;
+
+              Get.toNamed(Routes.moneyInScreen);
+              readQr();
+              break;
+
+            case "agent":
+              String uniqueCode = qrCodeData["uniqueCode"].toString();
+              sendMoneyController.senderAmountController.text =
+                  qrCodeData["expectedAmount"].toString().isNotEmpty
+                      ? qrCodeData["expectedAmount"].toString()
+                      : "0";
+              sendMoneyController.receiverAmountController.text =
+                  qrCodeData["expectedAmount"].toString().isNotEmpty
+                      ? qrCodeData["expectedAmount"].toString()
+                      : "0";
+              sendMoneyController.remainingController.senderCurrency.value =
+                  qrCodeData['currency'];
+              sendMoneyController.senderCurrency.value = qrCodeData['currency'];
+              sendMoneyController.receiverCurrency.value =
+                  qrCodeData['currency'];
+              sendMoneyController.fromBarcode.value = qrCodeData['fromBarcode'];
+
+              sendMoneyController.getCheckUserWithQrCodeData(uniqueCode);
+              // Get.back();
+              debugPrint("this.barcode!.code=> ${this.barcode!.code}");
+
+              sendMoneyController.copyInputController.text = uniqueCode;
+
+              Get.toNamed(Routes.moneyTransferScreen);
+              readQr();
+              break;
+            default:
+              CustomSnackBar.error(
+                  'Transaction cannot take place between the two parties');
+              Get.back();
+          }
+        } catch (e) {
+          controller.pauseCamera(); // Pause camera on error
+          debugPrint("QR code parsing error: $e");
+          CustomSnackBar.error('Invalid QR code format');
+          Future.delayed(const Duration(seconds: 2), () {
+            controller.resumeCamera();
+            isVisible.value = true; // Allow scanning again after delay
+          });
+        }
+      });
+    });
+  }
+
+  _iconButtonWidget(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSize * 0.8),
+      margin: EdgeInsets.only(
+        bottom: Dimensions.marginSizeVertical,
+      ),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+        GestureDetector(
+          onTap: () {},
+          child: CircleAvatar(
+            radius: 30,
+            backgroundColor: CustomColor.primaryLightColor,
+            child: CustomImageWidget(path: Assets.icon.scan),
+          ),
+        ),
+      ]),
+    );
+  }
+}
