@@ -400,22 +400,23 @@ class ApiServices {
 
   // basic data get
   static Future<BasicDataModel?> basicData() async {
-    print("basic data api url: ${ApiEndpoint.basicDataURL}");
+    // print("basic data api url: ${ApiEndpoint.basicDataURL}");
     Map<String, dynamic>? mapResponse;
     try {
       mapResponse = await ApiMethod(isBasic: true).get(
         ApiEndpoint.basicDataURL,
         code: 200,
       );
-      print("Basic data model response: $mapResponse");
+      // print("Basic data model response: $mapResponse");
       if (mapResponse != null) {
         BasicDataModel basicDataModel = BasicDataModel.fromJson(mapResponse);
-        print("basic data model $basicDataModel");
+        // print("basic data model $basicDataModel");
 
         return basicDataModel;
       }
+      // ignore: unused_catch_stack
     } catch (e, s) {
-      print(s);
+      // print(s);
       log.e('🐞🐞🐞 err check: from basic data Api service ==> $e 🐞🐞🐞');
       CustomSnackBar.error('Something went Wrong! in basic data Api');
       return null;
@@ -672,8 +673,8 @@ class ApiServices {
     try {
       mapResponse = await ApiMethod(isBasic: false)
           .post(ApiEndpoint.sendMoneyInsertURL, body, code: 200);
-      print('map Response of send money insert API: $mapResponse');
-      print('send money insert API:${ApiEndpoint.billPayConfirmedURL}');
+      // print('map Response of send money insert API: $mapResponse');
+      // print('send money insert API:${ApiEndpoint.billPayConfirmedURL}');
       if (mapResponse != null) {
         AddMoneyFlutterWavePaymentModel sendMoneyFlutterWaveInsertModel =
             AddMoneyFlutterWavePaymentModel.fromJson(mapResponse);
@@ -1285,8 +1286,8 @@ class ApiServices {
       if (mapResponse != null) {
         WithdrawFlutterWaveInsertModel sendMoneyManualInsertModel =
             WithdrawFlutterWaveInsertModel.fromJson(mapResponse);
-        print(
-            'map Response of withdraw auto flutterwave: ${sendMoneyManualInsertModel.message.toString()}');
+        // print(
+        //     'map Response of withdraw auto flutterwave: ${sendMoneyManualInsertModel.message.toString()}');
         // // CustomSnackBar.success(
         //     sendMoneyManualInsertModel.message.success.first.toString());
         return sendMoneyManualInsertModel;
@@ -1382,8 +1383,9 @@ class ApiServices {
         debugPrint("$modelData");
         return modelData;
       }
+      // ignore: unused_catch_stack
     } catch (e, s) {
-      print(s);
+      // print(s);
       log.e('🐞🐞🐞 err from bill pay info api service ==> $e 🐞🐞🐞');
       CustomSnackBar.error('Something went Wrong! in bill pay info Api');
       return null;
@@ -1398,8 +1400,8 @@ class ApiServices {
     try {
       mapResponse = await ApiMethod(isBasic: false)
           .post(ApiEndpoint.billPayConfirmedURL, body, code: 200);
-      print('map Response of bill pay: $mapResponse');
-      print('Bill pay confirmed API:${ApiEndpoint.billPayConfirmedURL}');
+      // print('map Response of bill pay: $mapResponse');
+      // print('Bill pay confirmed API:${ApiEndpoint.billPayConfirmedURL}');
       if (mapResponse != null) {
         CommonSuccessModel modelData = CommonSuccessModel.fromJson(mapResponse);
         // CustomSnackBar.success(modelData.message.success.first.toString());
@@ -1650,7 +1652,7 @@ class ApiServices {
       // });
 
       if (mapResponse != null) {
-        print('remittanceConfirmAPi: ${mapResponse.entries}');
+        // print('remittanceConfirmAPi: ${mapResponse.entries}');
         CommonSuccessModel modelData = CommonSuccessModel.fromJson(mapResponse);
         // CustomSnackBar.success(modelData.message.success.first.toString());
         return modelData;
@@ -1720,8 +1722,9 @@ class ApiServices {
 
         return modelData;
       }
+      // ignore: unused_catch_stack
     } catch (e, s) {
-      print(s);
+      // print(s);
       log.e('🐞🐞🐞 err from all recipient info api service ==> $e 🐞🐞🐞');
       CustomSnackBar.error('Something went Wrong! in all recipient info Api');
       return null;
@@ -2582,8 +2585,8 @@ class ApiServices {
         body,
         code: 200,
       );
-      print('top up auto reponse: $mapResponse');
-      print('top up auto API URL ${ApiEndpoint.topUpAutomaticConfirmedURL}');
+      // print('top up auto reponse: $mapResponse');
+      // print('top up auto API URL ${ApiEndpoint.topUpAutomaticConfirmedURL}');
       if (mapResponse != null) {
         CommonSuccessModel modelData = CommonSuccessModel.fromJson(mapResponse);
 
@@ -2630,8 +2633,8 @@ class ApiServices {
         ApiEndpoint.walletsURL,
         showResult: true,
       );
-      print("WalletInfoApi url: ${ApiEndpoint.walletsURL}");
-      print("WalletInfoApi response: $mapResponse");
+      // print("WalletInfoApi url: ${ApiEndpoint.walletsURL}");
+      // print("WalletInfoApi response: $mapResponse");
       if (mapResponse != null) {
         WalletsModel walletsModel = WalletsModel.fromJson(mapResponse);
 
@@ -2659,7 +2662,7 @@ class ApiServices {
         "${ApiEndpoint.remainingBalanceURL}$type&attribute=$attribute&sender_amount=$senderAmount&currency_code=$currencyCode&charge_id=$id",
         showResult: true,
       );
-      print('Remaining balance APi response:  $mapResponse');
+      // print('Remaining balance APi response:  $mapResponse');
       RemainingBalanceModel remainingBalanceModel =
           RemainingBalanceModel.fromJson(mapResponse!);
 
