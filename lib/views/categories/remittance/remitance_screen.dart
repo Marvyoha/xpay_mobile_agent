@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:qrpay/extentions/custom_extentions.dart';
+// import 'package:qrpay/extentions/custom_extentions.dart';
 
 import '/backend/utils/custom_loading_api.dart';
 import '/utils/dimensions.dart';

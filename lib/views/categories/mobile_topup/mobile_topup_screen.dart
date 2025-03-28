@@ -138,7 +138,7 @@ class MobileTopUpScreen extends StatelessWidget {
           InputDropDown(
             itemsList: controller.billList,
             selectMethod: controller.billMethodselected,
-            onChanged: ((p0) => controller.billMethodselected.value = p0!),
+            onChanged: ((v) => controller.billMethodselected.value = v!),
           ),
           verticalSpace(Dimensions.heightSize),
           TopUpPhoneNumberInputWidget(
@@ -156,6 +156,14 @@ class MobileTopUpScreen extends StatelessWidget {
             labelText: Strings.amount,
             keyboardType: TextInputType.number,
             onChanged: (v) {
+              if (v.isNotEmpty && v.length > 1 && v.startsWith('0')) {
+                controller.amountController.text =
+                    v.replaceFirst(RegExp(r'^0+'), '');
+                controller.amountController.selection =
+                    TextSelection.fromPosition(
+                  TextPosition(offset: controller.amountController.text.length),
+                );
+              }
               controller.getFee(
                 rate: double.parse(
                     controller.selectMainWallet.value!.currency.rate),

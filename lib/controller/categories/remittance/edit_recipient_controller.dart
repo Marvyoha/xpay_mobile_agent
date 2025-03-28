@@ -5,9 +5,7 @@ import '../../../backend/local_storage/local_storage.dart';
 import '../../../backend/model/common/common_success_model.dart';
 import '../../../backend/model/recipient/common/saved_recipient_info_model.dart';
 import '../../../backend/services/api_services.dart';
-import '../../../backend/utils/custom_snackbar.dart';
 import '../../../backend/utils/logger.dart';
-import '../../../language/english.dart';
 import '../../auth/registration/kyc_form_controller.dart';
 
 final log = logger(EditRecipientController);

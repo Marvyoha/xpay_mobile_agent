@@ -147,7 +147,7 @@ class RoutePageList {
 
     GetPage(
       name: Routes.dashboardScreen,
-      page: () => DashboardScreen(),
+      page: () => const DashboardScreen(),
     ),
     GetPage(
       name: Routes.notificationScreen,
@@ -306,7 +306,7 @@ class RoutePageList {
     ),
     GetPage(
       name: Routes.withdrawFlutterwaveScreen,
-      page: () => WithdrawFlutterWaveScreen(),
+      page: () => const WithdrawFlutterWaveScreen(),
     ),
 
     GetPage(

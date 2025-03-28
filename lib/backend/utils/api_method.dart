@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:qrpay/utils/basic_screen_imports.dart';
 import '../../utils/maintenance_dialog.dart';

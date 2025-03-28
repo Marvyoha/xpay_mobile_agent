@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:get/get.dart';
-import 'package:qrpay/routes/routes.dart';
+// import 'package:get/get.dart';
+// import 'package:qrpay/routes/routes.dart';
 
 import '../../backend/utils/custom_loading_api.dart';
 import '../../widgets/appbar/appbar_widget.dart';

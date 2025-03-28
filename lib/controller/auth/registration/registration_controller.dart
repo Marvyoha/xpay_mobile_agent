@@ -62,8 +62,8 @@ class RegistrationController extends GetxController {
     };
     await ApiServices.checkRegisterApi(body: inputBody).then((value) {
       _checkRegisterUserModel = value!;
-      print(
-          'check register content: ${_checkRegisterUserModel.message.success}');
+      // print(
+      //     'check register content: ${_checkRegisterUserModel.message.success}');
       if (selectedRegID.value == 0) {
         // print('Display is email verification  ${LocalStorage.isEmailVerification()}');
         if (LocalStorage.isEmailVerification()) {

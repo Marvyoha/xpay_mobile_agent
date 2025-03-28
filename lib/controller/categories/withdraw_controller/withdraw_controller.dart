@@ -416,7 +416,8 @@ class WithdrawController extends GetxController {
       //-------------------------- Process inputs end --------------------------
       _isInsertLoading.value = false;
 
-      getFlutterWaveBanks().then((value) => goToAddMoneyPreviewScreen());
+      getFlutterWaveBanks();
+      goToAddMoneyPreviewScreen();
 
       update();
     }).catchError((onError) {

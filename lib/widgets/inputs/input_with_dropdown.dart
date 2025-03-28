@@ -12,7 +12,7 @@ import '../../utils/custom_color.dart';
 import '../../utils/custom_style.dart';
 import '../../utils/dimensions.dart';
 import '../text_labels/title_heading4_widget.dart';
-import 'decimal_input_formater.dart';
+// import 'decimal_input_formater.dart';
 
 class SendMoneyInputWithDropdown extends StatefulWidget {
   final String hint, icon, label;

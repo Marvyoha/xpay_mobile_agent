@@ -7,6 +7,8 @@ import '../../../backend/model/common/common_success_model.dart';
 import '../../../backend/model/wallet/wallets_model.dart';
 import '../../../backend/services/api_services.dart';
 import '../../../backend/utils/logger.dart';
+import '../../../language/english.dart';
+import '../../../widgets/others/congratulation_widget.dart';
 import '../../remaining_controller/remaining_balance_controller.dart';
 import '../../wallet/wallets_controller.dart';
 
@@ -110,7 +112,7 @@ class BillPayController extends GetxController {
           ),
         );
       }
-      print('billTypes: ${data?.billTypes.first.id}');
+      // print('billTypes: ${data?.billTypes.first.id}');
       if (data?.billTypes.first.name == "AUTOMATIC") {
         isAutomatic.value = true;
       } else {
@@ -193,6 +195,7 @@ class BillPayController extends GetxController {
     required String type,
     required String amount,
     required String billNumber,
+    required BuildContext context,
   }) async {
     _isInsertLoading.value = true;
     update();
@@ -210,6 +213,14 @@ class BillPayController extends GetxController {
     await ApiServices.billPayConfirmedApi(body: inputBody).then((value) {
       _successDatya = value!;
       _isInsertLoading.value = false;
+      StatusScreen.show(
+        // ignore: use_build_context_synchronously
+        context: context,
+        subTitle: Strings.yourBillPaySuccess.tr,
+        onPressed: () {
+          Get.offAllNamed(Routes.bottomNavBarScreen);
+        },
+      );
       update();
     }).catchError((onError) {
       log.e(onError);

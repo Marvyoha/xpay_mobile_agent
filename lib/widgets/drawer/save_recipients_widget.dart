@@ -1,10 +1,12 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qrpay/language/language_controller.dart';
 import 'package:qrpay/utils/custom_color.dart';
 import 'package:qrpay/utils/custom_style.dart';
-import 'package:qrpay/widgets/others/custom_glass/custom_glass_widget.dart';
+// import 'package:qrpay/widgets/others/custom_glass/custom_glass_widget.dart';
 import 'package:qrpay/widgets/text_labels/custom_title_heading_widget.dart';
 import 'package:qrpay/widgets/text_labels/title_heading3_widget.dart';
 

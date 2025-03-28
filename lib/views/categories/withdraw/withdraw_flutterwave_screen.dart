@@ -1,22 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:qrpay/backend/utils/custom_loading_api.dart';
 import 'package:qrpay/routes/routes.dart';
-import 'package:qrpay/utils/dimensions.dart';
 import 'package:qrpay/utils/responsive_layout.dart';
-import 'package:qrpay/utils/size.dart';
 import 'package:qrpay/widgets/appbar/appbar_widget.dart';
-import 'package:qrpay/widgets/buttons/primary_button.dart';
 
 import '../../../controller/categories/withdraw_controller/withdraw_controller.dart';
-import '../../../language/english.dart';
 import '../../../utils/basic_screen_imports.dart';
-import '../../../utils/custom_style.dart';
+// import '../../../utils/custom_style.dart';
 import '../../../widgets/dropdown/flutter_wave_banks_drop_down.dart';
 import '../../../widgets/dropdown/flutter_wave_branch_dropdown.dart';
-import '../../../widgets/inputs/primary_input_filed.dart';
 import '../../../widgets/others/congratulation_widget.dart';
-import '../../../widgets/text_labels/custom_title_heading_widget.dart';
+// import '../../../widgets/text_labels/custom_title_heading_widget.dart';
 
 class WithdrawFlutterWaveScreen extends StatefulWidget {
   const WithdrawFlutterWaveScreen({super.key});

@@ -24,7 +24,7 @@ import '../../../utils/custom_color.dart';
 import '../../../utils/custom_style.dart';
 import '../../../widgets/dropdown/custom_input_drop_down.dart';
 import '../../../widgets/inputs/primary_text_input_widget.dart';
-import '../../../widgets/others/congratulation_widget.dart';
+// import '../../../widgets/others/congratulation_widget.dart';
 import '../../../widgets/others/limit_information_widget.dart';
 import '../../../widgets/text_labels/custom_title_heading_widget.dart';
 
@@ -273,21 +273,11 @@ class BillPayScreen extends StatelessWidget {
                 if (dashboardController.kycStatus.value == 1) {
                   controller.type.value =
                       controller.getType(controller.billMethodselected.value)!;
-                  controller
-                      .billPayApiProcess(
-                          amount: controller.amountController.text,
-                          billNumber: controller.billNumberController.text,
-                          type: controller.type.value)
-                      .then(
-                        (value) => StatusScreen.show(
-                          // ignore: use_build_context_synchronously
-                          context: context,
-                          subTitle: Strings.yourBillPaySuccess.tr,
-                          onPressed: () {
-                            Get.offAllNamed(Routes.bottomNavBarScreen);
-                          },
-                        ),
-                      );
+                  controller.billPayApiProcess(
+                      context: context,
+                      amount: controller.amountController.text,
+                      billNumber: controller.billNumberController.text,
+                      type: controller.type.value);
                 } else {
                   CustomSnackBar.error(Strings.pleaseSubmitYourInformation);
                   Future.delayed(const Duration(seconds: 2), () {

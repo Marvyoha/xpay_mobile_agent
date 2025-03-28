@@ -40,15 +40,15 @@ class RemaingBalanceController extends GetxController {
 
       remainingDailyLimit.value =
           double.parse(_remainingBalanceModel?.data.remainingDaily ?? "0");
-      print(" this is daily limit: ${remainingDailyLimit.value}");
+      // print(" this is daily limit: ${remainingDailyLimit.value}");
       senderCurrency.value = _remainingBalanceModel?.data.currency ?? "0";
       remainingMonthLyLimit.value =
           double.parse(_remainingBalanceModel?.data.remainingMonthly ?? "0");
-      print(" this is daily limit: ${remainingMonthLyLimit.value}");
+      // print(" this is daily limit: ${remainingMonthLyLimit.value}");
       _isLoading.value = false;
       update();
     }).catchError((onError) {
-      print('This is the required error $onError');
+      // print('This is the required error $onError');
       log.e(onError);
       _isLoading.value = false;
     });

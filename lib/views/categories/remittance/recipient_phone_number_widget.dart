@@ -1,6 +1,4 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qrpay/controller/auth/registration/kyc_form_controller.dart';
@@ -8,7 +6,6 @@ import 'package:qrpay/controller/categories/remittance/add_recipient_controller.
 import 'package:qrpay/utils/size.dart';
 import 'package:qrpay/widgets/text_labels/title_heading4_widget.dart';
 
-import '../../../backend/model/auth/registation/basic_data_model.dart';
 import '../../../language/english.dart';
 import '../../../utils/custom_color.dart';
 import '../../../utils/custom_style.dart';

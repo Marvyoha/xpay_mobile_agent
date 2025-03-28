@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:qrpay/backend/utils/custom_loading_api.dart';
-import 'package:qrpay/backend/utils/custom_snackbar.dart';
+// import 'package:qrpay/backend/utils/custom_snackbar.dart';
 import 'package:qrpay/custom_assets/assets.gen.dart';
 import 'package:qrpay/routes/routes.dart';
 import 'package:qrpay/utils/custom_color.dart';

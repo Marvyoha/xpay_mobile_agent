@@ -19,10 +19,22 @@ import '../../widgets/bottom_navbar/transaction_history_widget.dart';
 import '../../widgets/text_labels/title_heading3_widget.dart';
 import '../../widgets/text_labels/title_heading4_widget.dart';
 
-class DashboardScreen extends StatelessWidget {
-  DashboardScreen({super.key});
+class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
 
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
   final controller = Get.put(DashBoardController());
+  late final Future<dynamic> _dashboardFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _dashboardFuture = controller.getDashboardData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,35 +50,48 @@ class DashboardScreen extends StatelessWidget {
   }
 
   _bodyWidget(BuildContext context) {
-    return Stack(
-      children: [
-        // Container(
-        //   height: MediaQuery.sizeOf(context).height * 0.3,
-        //   padding: EdgeInsets.all(Dimensions.paddingSize),
-        //   // color: CustomColor.primaryLightColor,
-        // ),
-        RefreshIndicator(
-          color: CustomColor.primaryLightColor,
-          triggerMode: RefreshIndicatorTriggerMode.anywhere,
-          strokeWidth: 2.5,
-          onRefresh: () async {
-            controller.getDashboardData();
-            controller.walletController.getWalletsInfoProcess();
-            return Future<void>.delayed(const Duration(seconds: 3));
-          },
-          child: ListView(
-            // physics: const NeverScrollableScrollPhysics(),
-            children: [
-              verticalSpace(Dimensions.heightSize * .4),
-              _walletsWidget(context),
-              _categoriesWidget(context),
-            ],
-          ),
-        ),
+    return FutureBuilder(
+        future: _dashboardFuture,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(child: Text(Strings.somethingWentWrong));
+          }
+          if (snapshot.hasData) {
+            return Obx(() => Stack(
+                  children: [
+                    // Container(
+                    //   height: MediaQuery.sizeOf(context).height * 0.3,
+                    //   padding: EdgeInsets.all(Dimensions.paddingSize),
+                    //   // color: CustomColor.primaryLightColor,
+                    // ),
+                    RefreshIndicator(
+                      color: CustomColor.primaryLightColor,
+                      triggerMode: RefreshIndicatorTriggerMode.anywhere,
+                      strokeWidth: 2.5,
+                      onRefresh: () async {
+                        controller.getDashboardData();
+                        controller.walletController.getWalletsInfoProcess();
+                        return Future<void>.delayed(const Duration(seconds: 3));
+                      },
+                      child: ListView(
+                        // physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          verticalSpace(Dimensions.heightSize * .4),
+                          _walletsWidget(context),
+                          _categoriesWidget(context),
+                        ],
+                      ),
+                    ),
 
-        _draggableSheet(context)
-      ],
-    );
+                    _draggableSheet(context)
+                  ],
+                ));
+          }
+          return const Align(
+            alignment: Alignment.center,
+            child: CustomLoadingAPI(),
+          );
+        });
   }
 
   _draggableSheet(BuildContext context) {
@@ -287,7 +312,10 @@ class DashboardScreen extends StatelessWidget {
                 color: controller.switchCurrency.value == 0
                     ? Colors.transparent
                     : Colors.grey.withValues(alpha: 0.2)),
-            label: const TitleHeading4Widget(
+            label: TitleHeading4Widget(
+              color: Get.isDarkMode
+                  ? CustomColor.whiteColor
+                  : CustomColor.primaryDarkColor,
               text: Strings.fiatCurrency,
               fontWeight: FontWeight.w500,
             ),
@@ -311,7 +339,10 @@ class DashboardScreen extends StatelessWidget {
                 color: controller.switchCurrency.value == 1
                     ? Colors.transparent
                     : Colors.grey.withValues(alpha: 0.2)),
-            label: const TitleHeading4Widget(
+            label: TitleHeading4Widget(
+              color: Get.isDarkMode
+                  ? CustomColor.whiteColor
+                  : CustomColor.primaryDarkColor,
               text: Strings.cryptoCurrency,
               fontWeight: FontWeight.w500,
             ),
